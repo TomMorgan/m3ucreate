@@ -14,6 +14,19 @@ int noCMD = 0;                           // Used to specify whether a command li
 
 int main (int argc, char *argv[]) {
 
+	if (argc == 1) {
+
+		printf("\nm3ucreate version 0.1\n");
+		printf("Creates M3U files from lists of files given as command line arguments\n");
+		printf("USAGE:\n");
+		printf("-m plus files outputs to stdout\n");
+		printf("-f plus music files followed by m3ufile outputs to m3ufile. Wildcards accepted.\n");
+		printf("-o overrides requirement that m3ufile for \"-f\" ends in \"m3u\" or \"m3u8\"\n\n");
+
+		
+		return 0;
+	}		
+	
 	if (argc > 1) {
 	
 		for (cmdI=1; (char) argv[cmdI][0] == '-'; cmdI++) {       // Iterate through the command lines, checking for '-'
@@ -38,13 +51,7 @@ int main (int argc, char *argv[]) {
 		}
 
 		
-		if (cmdI == 0) {
-
-			printf("USAGE: -m plus files outputs to stdout, -f plus music files followed by m3ufile outputs to m3ufile\n");
-			printf("       -o overrides requirement that m3ufile for \"-f\" ends in \"m3u\"\n");
 		
-			return 0;
-		}
 			
 
 		if ((doM == 1) || (noCMD == 1)) {        // If -m is given as a command or no command is specified... 
