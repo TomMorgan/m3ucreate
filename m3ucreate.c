@@ -71,6 +71,11 @@ int main (int argc, char *argv[]) {
 					FILE *m3ufile;                                                   
 					m3ufile = fopen(argv[argc - 1], "w"); // Open file to write
 
+					if (m3ufile == NULL) {
+						fprintf(stderr, "Error opening M3U for writing\n");
+						return -1;
+					}
+
 					
 
 					for (int i = cmdI; i < argc - 1; i++) {     
@@ -85,8 +90,10 @@ int main (int argc, char *argv[]) {
 								glob_t globbuf;                         // Use glob to store all instances of wild
 													// card in globbuf
 								
-								globbuf.gl_offs = 16384;
-								glob(argv[i], 0, NULL, &globbuf);
+							//	globbuf.gl_offs = 16384;                // Buffer overflow vulnerability
+								if (glob(argv[i], 0, NULL, &globbuf) != 0) {
+									printf("Problem with glob() or filesystem\n");
+								}
 								
 								for (int k = globbuf.gl_pathc; k > 0; k--) { // Loop through globbuf.gl_pathv 													             // backwards to get alphabetized list
 													     // and print it to m3ufile.	
