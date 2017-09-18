@@ -1,0 +1,7 @@
+m3ucreate version 0.1
+Creates M3U files from lists of files given as command line arguments
+USAGE:
+	-m plus files outputs to stdout
+	-f plus music files followed by m3ufile outputs to m3ufile. Wildcards accepted for tracks.
+	-o overrides requirement that m3ufile for "-f" ends in "m3u" or "m3u8"
+

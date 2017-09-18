@@ -1,0 +1,5 @@
+In the directory with the source type
+
+./configure
+make
+make install      # (as superuser)
