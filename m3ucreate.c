@@ -59,10 +59,45 @@ int main (int argc, char *argv[]) {
 			for (int i = cmdI; i < argc; i++) {   // Iterate though every argument after the initial arguments.
 			
 				
-				if (((doF == 1) && (i == argc - 1)) || (isM3U(argv[i]) == 1) || (noCMD == 1)) {
+				if (((doF == 1) && (i == argc - 1)) || (isM3U(argv[i]) == 1) || ((noCMD == 1) && (i == argc))) {
 					break;
 				}
-				printf("%s\n", argv[i]); 	 // Print arguments to screen
+
+				
+				    
+				int asteriskInFilename = 0;
+					
+				
+				for (unsigned int j = 0; j < strlen(argv[i]); j++) {
+						
+					if (argv[i][(char) j] == '*') {                       // Check if there's an asterisk	  wildcard							
+						asteriskInFilename = 1;
+						glob_t globbuf;                         // Use glob to store all instances of wild
+			 									// card in globbuf
+								
+					//	globbuf.gl_offs = 16384;                // Buffer overflow vulnerability
+						if (glob(argv[i], 0, NULL, &globbuf) != 0) {
+							printf("Problem with glob() or filesystem\n");
+						}
+								
+						for (int k = globbuf.gl_pathc; k > 0; k--) { // Loop through globbuf.gl_pathv 											             // backwards to get alphabetized list
+											     // and print it to m3ufile.	
+							printf("%s\n", globbuf.gl_pathv[k]);
+						}								
+						break;
+							
+						
+										
+					}
+
+		
+					
+				}	
+				
+				if (asteriskInFilename == 0) {			
+					printf("%s\n", argv[i]); // Output arguments to screen
+				}
+				 	 // Print arguments to screen
 			}
 
 		}	
@@ -72,7 +107,7 @@ int main (int argc, char *argv[]) {
 
 			if (argc > cmdI) {    // Make sure there actually are arguments to write.
 	
-	 			if (((isM3U(argv[argc - 1]) == 1) && (overrideM3UCheck == 0))) {        // Make sure last file given is actually
+	 			if (((isM3U(argv[argc - 1]) == 1) || (overrideM3UCheck == 1))) {        // Make sure last file given is actually
 													   // an M3U to write, unless "-o" is true..
 
 					FILE *m3ufile;                                                   
