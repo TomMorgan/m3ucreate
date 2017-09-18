@@ -1,5 +1,6 @@
 m3ucreate version 0.1
-Creates M3U files from lists of files given as command line arguments
+Creates M3U files from lists of files given as command line arguments. Asterisk wild
+cards are accepted for tracks.
 USAGE:
 	-m plus files outputs to stdout
 	-f plus music files followed by m3ufile outputs to m3ufile. Wildcards accepted for tracks.

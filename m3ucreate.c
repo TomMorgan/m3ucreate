@@ -10,26 +10,23 @@ int doF = 0;                             // Is 1 if "-f" is given as a command l
 int overrideM3UCheck = 0;                // Is 1 if "-o" is selected (write to last argument given even if it isn't an m3u file).
 					 // Usage of "-o" can overwrite files so be careful!
 int cmdI = 0;                            // Used to iterate through the command line arguments like "-f" or "-m" or "-o"
-int noCMD = 0;                           // Used to specify whether a command line option has been entered.
+int noCMD = 0;
+const char *version = "0.1";		                           // Used to specify whether a command line option has been entered.
 
 int main (int argc, char *argv[]) {
 
 	if (argc == 1) {
 
-		printf("\nm3ucreate version 0.1\n");
-		printf("Creates M3U files from lists of files given as command line arguments\n");
-		printf("USAGE:\n");
-		printf("-m plus files outputs to stdout\n");
-		printf("-f plus music files followed by m3ufile outputs to m3ufile. Wildcards accepted.\n");
-		printf("-o overrides requirement that m3ufile for \"-f\" ends in \"m3u\" or \"m3u8\"\n\n");
+		printHelp();
 
-		
 		return 0;
 	}		
 	
 	if (argc > 1) {
+
+		int firstIsLastCommand = 0;
 	
-		for (cmdI=1; (char) argv[cmdI][0] == '-'; cmdI++) {       // Iterate through the command lines, checking for '-'
+		for (cmdI=1; ((char) argv[cmdI][0] == '-'); cmdI++) {       // Iterate through the command lines, checking for '-'
 		
 			switch((char) argv[cmdI][1]) {
 			
@@ -42,6 +39,30 @@ int main (int argc, char *argv[]) {
 				case 'o':
 					overrideM3UCheck=1;
 					break;
+				case '-':
+					if (strcmp((char *) argv[cmdI] + 2, "help") == 0) {
+						printHelp();
+						firstIsLastCommand = 1;
+						break;
+					
+					}
+
+
+					
+					
+					else if	(strcmp((char *) argv[cmdI] + 2, "version") == 0) {
+						printf("%s\n", version);
+						firstIsLastCommand = 1;
+
+						break;
+					}
+					break;
+
+					
+			}
+
+			if (firstIsLastCommand == 1) {
+				break;
 			}
 
 		}
@@ -54,7 +75,7 @@ int main (int argc, char *argv[]) {
 		
 			
 
-		if ((doM == 1) || (noCMD == 1)) {        // If -m is given as a command or no command is specified... 
+		if ((doM == 1) || (noCMD == 1) && (firstIsLastCommand == 0)) {        // If -m is given as a command or no command is specified... 
 			
 			for (int i = cmdI; i < argc; i++) {   // Iterate though every argument after the initial arguments.
 			
@@ -191,4 +212,17 @@ int isM3U(char *filename1) {
 	else {
 		return 0;
 	}
+}
+
+void printHelp() {
+	
+	
+		printf("\nm3ucreate version 0.1\n");
+		printf("Creates M3U files from lists of files given as command line arguments. Asterisk wild\n");
+		printf("cards are accepted for tracks.\n");
+		printf("USAGE:\n");
+		printf("-m plus files outputs to stdout\n");
+		printf("-f plus music files followed by m3ufile outputs to m3ufile. Wildcards accepted.\n");
+		printf("-o overrides requirement that m3ufile for \"-f\" ends in \"m3u\" or \"m3u8\"\n\n");
+
 }
