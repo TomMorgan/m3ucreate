@@ -6,12 +6,14 @@
 
 
 int doM = 0;				 // Is 1 if "-m" is selected, the command to write to the "m3u" to stdout instead of an m3u file.
-int doF = 0;                             // Is 1 if "-f" is given as a command line argument, the command to write to an m3u file given as the last 						 // command line argument. 
+int doF = 0;                             // Is 1 if "-f" is given as a command line argument, the command to write to an m3u file given as the last 		
+					 // command line argument. 
+int doA = 0;                             // Is 1 if "-a" is selected, the command to _APPEND_ to an existing m3u file.
 int overrideM3UCheck = 0;                // Is 1 if "-o" is selected (write to last argument given even if it isn't an m3u file).
 					 // Usage of "-o" can overwrite files so be careful!
 int cmdI = 0;                            // Used to iterate through the command line arguments like "-f" or "-m" or "-o"
 int noCMD = 0;
-const char *version = "0.1";		                           // Used to specify whether a command line option has been entered.
+const char *version = "0.2";		                           // Used to specify whether a command line option has been entered.
 
 int main (int argc, char *argv[]) {
 
@@ -38,6 +40,9 @@ int main (int argc, char *argv[]) {
 					break;
 				case 'o':
 					overrideM3UCheck=1;
+					break;
+				case 'a':
+					doA=1;
 					break;
 				case '-':
 					if (strcmp((char *) argv[cmdI] + 2, "help") == 0) {
@@ -127,16 +132,23 @@ int main (int argc, char *argv[]) {
 		}	
 				
 
-		if (doF == 1 || (isM3U(argv[argc - 1]) == 1)) {   // If "-f" has been given as a command or the last argument is an M3U (Write arguments to M3U file)
+		if (doF == 1 || (isM3U(argv[argc - 1]) == 1) || doA == 1) {   // If "-f" has been given as a command or the last argument is an M3U (Write arguments to M3U file)
 
 			if (argc > cmdI) {    // Make sure there actually are arguments to write.
 	
 	 			if (((isM3U(argv[argc - 1]) == 1) || (overrideM3UCheck == 1))) {        // Make sure last file given is actually
 													   // an M3U to write, unless "-o" is true..
 
-					FILE *m3ufile;                                                   
-					m3ufile = fopen(argv[argc - 1], "w"); // Open file to write
+					FILE *m3ufile;
+					if (doA == 0) { 
+						                                                  
+						m3ufile = fopen(argv[argc - 1], "w"); // Open file to write
 
+					}
+					else {
+						m3ufile = fopen(argv[argc - 1], "a");
+					}
+										
 					if (m3ufile == NULL) {
 						fprintf(stderr, "Error opening M3U for writing\n");
 						return -1;
@@ -220,12 +232,13 @@ int isM3U(char *filename1) {
 void printHelp() {
 	
 	
-		printf("\nm3ucreate version 0.1\n");
+		printf("\nm3ucreate version 0.2\n");
 		printf("Creates M3U files from lists of files given as command line arguments. Asterisk wild\n");
 		printf("cards are accepted for tracks.\n");
 		printf("USAGE:\n");
 		printf("-m plus files outputs to stdout\n");
 		printf("-f plus music files followed by m3ufile outputs to m3ufile. Wildcards accepted.\n");
-		printf("-o overrides requirement that m3ufile for \"-f\" ends in \"m3u\" or \"m3u8\"\n\n");
+		printf("-o overrides requirement that m3ufile for \"-f\" ends in \"m3u\" or \"m3u8\"\n");
+		printf("-a plus music files followed by existing m3ufile appends tracks to m3ufile.\n\n");
 
 }
