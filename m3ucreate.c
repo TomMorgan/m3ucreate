@@ -47,16 +47,19 @@ int main (int argc, char *argv[]) {
 					
 					}
 
-
-					
-					
 					else if	(strcmp((char *) argv[cmdI] + 2, "version") == 0) {
 						printf("%s\n", version);
 						firstIsLastCommand = 1;
 
 						break;
 					}
+
 					break;
+
+				default:
+					firstIsLastCommand = 1;
+					break;
+
 
 					
 			}
