@@ -324,7 +324,7 @@ int isM3U(char *filename1) {
 void printHelp() {
 	
 	
-		printf("\nm3ucreate version 0.2\n");
+		printf("\nm3ucreate version 0.2.1\n");
 		printf("Creates M3U files from lists of files given as command line arguments. Asterisk wild\n");
 		printf("cards are accepted for tracks.\n");
 		printf("USAGE:\n");
