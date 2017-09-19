@@ -1,4 +1,4 @@
-m3ucreate version 0.2
+m3ucreate version 0.2.1
 Creates M3U files from lists of files given as command line arguments. Asterisk wild
 cards are accepted for tracks.
 USAGE:
@@ -6,3 +6,6 @@ USAGE:
 	-f plus music files followed by m3ufile outputs to m3ufile. Wildcards accepted for tracks.
 	-o overrides requirement that m3ufile for "-f" ends in "m3u" or "m3u8"
 	-a plus music files followed by existing m3ufile appends tracks to m3ufile.
+	-j joins any combination of tracks, wildcards, and existing m3u files into an m3u file
+           supplied as the final argument.
+
