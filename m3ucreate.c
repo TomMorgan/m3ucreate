@@ -3,7 +3,7 @@
 #include <string.h>
 #include <glob.h>
 
-
+#define NO_USER_INTERFACE_OPTIMIZED 0
 
 int doM = 0;				 // Is 1 if "-m" is selected, the command to write to the "m3u" to stdout instead of an m3u file.
 int doF = 0;                             // Is 1 if "-f" is given as a command line argument, the command to write to an m3u file given as the last 		
@@ -14,9 +14,13 @@ int overrideM3UCheck = 0;                // Is 1 if "-o" is selected (write to l
 					 // Usage of "-o" can overwrite files so be careful!
 int cmdI = 0;                            // Used to iterate through the command line arguments like "-f" or "-m" or "-o"
 int noCMD = 0;
+#if NO_USER_INTERFACE_OPTIMIZED == 0
 const char *version = "0.2.2";		                           // Used to specify whether a command line option has been entered.
+#endif
 
 int main (int argc, char *argv[]) {
+
+	#if NO_USER_INTERFACE_OPTIMIZED == 0
 
 	if (argc == 1) {
 
@@ -25,6 +29,7 @@ int main (int argc, char *argv[]) {
 		return 0;
 	}		
 	
+	#endif
 	if (argc > 1) {
 
 		int firstIsLastCommand = 0;
@@ -48,6 +53,7 @@ int main (int argc, char *argv[]) {
 				case 'j':
 					doJ=1;
 					break;
+				#if NO_USER_INTERFACE_OPTIMIZED == 0				
 				case '-':
 					if (strcmp((char *) argv[cmdI] + 2, "help") == 0) {
 						printHelp();
@@ -64,6 +70,7 @@ int main (int argc, char *argv[]) {
 					}
 
 					break;
+				#endif
 
 				default:
 					firstIsLastCommand = 1;
@@ -110,7 +117,10 @@ int main (int argc, char *argv[]) {
 								
 					//	globbuf.gl_offs = 16384;                // Buffer overflow vulnerability
 						if (glob(argv[i], 0, NULL, &globbuf) != 0) {
-							printf("Problem with glob() or filesystem\n");
+							#if NO_USER_INTERFACE_OPTIMIZED == 0
+							fprintf(stderr, "Problem with glob() or filesystem\n");
+							#endif
+							return(-1);
 						}
 								
 						for (int k = globbuf.gl_pathc; k > 0; k--) { // Loop through globbuf.gl_pathv 											             // backwards to get alphabetized list
@@ -174,7 +184,9 @@ int main (int argc, char *argv[]) {
 								
 							//	globbuf.gl_offs = 16384;                // Buffer overflow vulnerability
 								if (glob(argv[i], 0, NULL, &globbuf) != 0) {
-									printf("Problem with glob() or filesystem\n");
+									#if NO_USER_INTERFACE_OPTIMIZED == 0
+									fprintf(stderr, "Problem with glob() or filesystem\n");
+									#endif
 								}
 								
 								for (int k = globbuf.gl_pathc; k > 0; k--) { // Loop through globbuf.gl_pathv 													             // backwards to get alphabetized list
@@ -198,13 +210,16 @@ int main (int argc, char *argv[]) {
 				}
 
 				else {
+					#if NO_USER_INTERFACE_OPTIMIZED == 0
 					printf("No m3u file given\n");      // Tell if no M3U file has been given
+					#endif
 				}
 			}
 
 			else {
+				#if NO_USER_INTERFACE_OPTIMIZED == 0
 				printf("No arguments for -f\n");  // Tell if no arguments for "-f" have been given
-				
+				#endif				
 				return(1);
 
 			}
@@ -224,7 +239,9 @@ int main (int argc, char *argv[]) {
 					m3uToWrite = fopen(argv[argc - 1], "w");
 
 					if (m3uToWrite == NULL) {
+						#if NO_USER_INTERFACE_OPTIMIZED == 0
 						fprintf(stderr, "File error with m3u to write");
+						#endif
 						return(-1);
 					}
 
@@ -236,7 +253,9 @@ int main (int argc, char *argv[]) {
 								
 								m3uToRead = fopen(argv[i], "r");
 								if (m3uToRead == NULL) {
+									#if NO_USER_INTERFACE_OPTIMIZED == 0
 									fprintf(stderr, "M3UToRead cannot be read");
+									#endif
 									return(-1);
 								}
  								int fileSize;
@@ -246,7 +265,9 @@ int main (int argc, char *argv[]) {
 								char *m3uStringBuf=malloc(ftell(m3uToRead) + 4);
 								
 								if (m3uStringBuf == NULL) {
+									#if NO_USER_INTERFACE_OPTIMIZED == 0
 									fprintf(stderr, "Error allocating memory, exiting.");
+									#endif
 									return(-1);
 								}
 							
@@ -283,7 +304,6 @@ int main (int argc, char *argv[]) {
 									glob_t globbuf;                         // Use glob to store all instances of wild
 														// card in globbuf
 								
-								//	globbuf.gl_offs = 16384;                // Buffer overflow vulnerability
 									if (glob(argv[i], 0, NULL, &globbuf) != 0) {
 										printf("Problem with glob() or filesystem\n");
 									}
@@ -333,6 +353,8 @@ int isM3U(char *filename1) {
 	}
 }
 
+#if NO_USER_INTERFACE_OPTIMIZED == 0
+
 void printHelp() {
 	
 	
@@ -348,3 +370,5 @@ void printHelp() {
 		printf("   supplied as the final argument.\n\n");
 
 }
+
+#endif
