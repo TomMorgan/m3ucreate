@@ -14,7 +14,7 @@ int overrideM3UCheck = 0;                // Is 1 if "-o" is selected (write to l
 					 // Usage of "-o" can overwrite files so be careful!
 int cmdI = 0;                            // Used to iterate through the command line arguments like "-f" or "-m" or "-o"
 int noCMD = 0;
-const char *version = "0.2.1";		                           // Used to specify whether a command line option has been entered.
+const char *version = "0.2.2";		                           // Used to specify whether a command line option has been entered.
 
 int main (int argc, char *argv[]) {
 
@@ -336,7 +336,7 @@ int isM3U(char *filename1) {
 void printHelp() {
 	
 	
-		printf("\nm3ucreate version 0.2.1\n");
+		printf("\nm3ucreate version 0.2.2\n");
 		printf("Creates M3U files from lists of files given as command line arguments. Asterisk wild\n");
 		printf("cards are accepted for tracks.\n");
 		printf("USAGE:\n");
