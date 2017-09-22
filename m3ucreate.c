@@ -4,6 +4,10 @@
 #include <glob.h>
 
 #define NO_USER_INTERFACE_OPTIMIZED 0
+// ^ set as one to remove messages and features that wouldn't be seen if this was run without the commandline, stdout, or stderr being visible
+
+
+
 
 int doM = 0;				 // Is 1 if "-m" is selected, the command to write to the "m3u" to stdout instead of an m3u file.
 int doF = 0;                             // Is 1 if "-f" is given as a command line argument, the command to write to an m3u file given as the last 		
