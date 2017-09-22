@@ -232,14 +232,25 @@ int main (int argc, char *argv[]) {
 						if (isM3U(argv[i]) == 1) {
 							//if (i == cmdI) {
 								FILE *m3uToRead;
-								char m3uStringBuf[32729];
+								//char m3uStringBuf[32729];
 								
 								m3uToRead = fopen(argv[i], "r");
 								if (m3uToRead == NULL) {
 									fprintf(stderr, "M3UToRead cannot be read");
 									return(-1);
 								}
- 
+ 								int fileSize;
+								
+								fseek(m3uToRead, 0, SEEK_END);
+								
+								char *m3uStringBuf=malloc(ftell(m3uToRead) + 4);
+								
+								if (m3uStringBuf == NULL) {
+									fprintf(stderr, "Error allocating memory, exiting.");
+									return(-1);
+								}
+							
+								fseek(m3uToRead, 0, SEEK_SET);
 								
 
 								int j = 0;
@@ -253,6 +264,7 @@ int main (int argc, char *argv[]) {
 								
 								fprintf(m3uToWrite, "%s", m3uStringBuf);
 								fclose(m3uToRead);
+								free(m3uStringBuf);
 								
 						//	}
 						}
