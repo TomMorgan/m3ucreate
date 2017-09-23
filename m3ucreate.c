@@ -9,32 +9,37 @@
 
 
 
-int doM = 0;							// Is 1 if "-m" is selected, the command to write to the "m3u" to stdout instead of an m3u file.
-int doF = 0;                            // Is 1 if "-f" is given as a command line argument, the command to write to an m3u file given as the last 		
+char doM = 0;							// Is 1 if "-m" is selected, the command to write to the "m3u" to stdout instead of an m3u file.
+char doF = 0;							// Is 1 if "-f" is given as a command line argument, the command to write to an m3u file given as the last 		
 										// command line argument. 
-int doA = 0;                            // Is 1 if "-a" is selected, the command to _APPEND_ to an existing m3u file.
-int doJ = 0;                            // Is 1 if "-j" is selected, the command to join the contents of a list of m3us or tracks or any
+char doA = 0;							// Is 1 if "-a" is selected, the command to _APPEND_ to an existing m3u file.
+char doJ = 0;							// Is 1 if "-j" is selected, the command to join the contents of a list of m3us or tracks or any
 										// combination of both
-int overrideM3UCheck = 0;               // Is 1 if "-o" is selected (write to last argument given even if it isn't an m3u file).
+char overrideM3UCheck = 0;				// Is 1 if "-o" is selected (write to last argument given even if it isn't an m3u file).
 										// Usage of "-o" can overwrite files so be careful!
 int cmdI = 0;                           // Used to iterate through the command line arguments like "-f" or "-m" or "-o"
-int noCMD = 0;
+char noCMD = 0;
 #if NO_USER_INTERFACE_OPTIMIZED == 0
-const char *version = "0.2.3";		                           // Used to specify whether a command line option has been entered.
+const char *version = "0.2.3f";		                           // Used to specify whether a command line option has been entered.
 #endif
+
+char isM3U(char *filename1);            // Function prototypes; see functions themselves below main() for comments
+#if NO_USER_INTERFACE_OPTIMIZED == 0
+void printHelp();
+#endif 
 
 int main (int argc, char *argv[]) {
 
-	#if NO_USER_INTERFACE_OPTIMIZED == 0
+	
 
 	if (argc == 1) {
-
+		
+		#if NO_USER_INTERFACE_OPTIMIZED == 0
 		printHelp();
-
+		#endif
 		return 0;
 	}		
 	
-	#endif
 	if (argc > 1) {
 
 		int firstIsLastCommand = 0;
@@ -116,7 +121,7 @@ int main (int argc, char *argv[]) {
 
 				
 				    
-				int asteriskInFilename = 0;
+				char asteriskInFilename = 0;
 					
 				
 				for (unsigned int j = 0; j < strlen(argv[i]); j++) {
@@ -185,11 +190,11 @@ int main (int argc, char *argv[]) {
 
 					
 
-					for (int i = cmdI; i < argc - 1; i++) {    // Iterate through commands 
-						int asteriskInFilename = 0;            // Haven't found an asterisk yet, so it's 0
+					for (int i = cmdI; i < argc - 1; i++) {		// Iterate through commands 
+						char asteriskInFilename = 0;			// Haven't found an asterisk yet, so it's 0
 					
 				
-						for (char j = 0; j < strlen(argv[i]); j++) {
+						for (int j = 0; j < strlen(argv[i]); j++) {
 							
 							if (argv[i][j] == '*') {                       // Check if there's an asterisk wildcard
 								
@@ -311,7 +316,7 @@ int main (int argc, char *argv[]) {
 						
 
 						else {
-							int asteriskInFilename = 0;						// By default, no asterisk until one is found
+							char asteriskInFilename = 0;						// By default, no asterisk until one is found
 					
 				
 							for (char j = 0; j < strlen(argv[i]); j++) {   // Iterate through argument to look for asterisk
@@ -377,9 +382,9 @@ int main (int argc, char *argv[]) {
  * files if someone forgets to supply an m3u as a last argument
  */
 
-int isM3U(char *filename1) {
+char isM3U(char *filename1) {
 
-	if (((strcmp((char *) filename1 + strlen(filename1) - 3, "m3u") == 0) || (strcmp((char *) filename1 + strlen(filename1) - 4, "m3u8") == 0))) 		{
+	if (((strcmp((char *) filename1 + strlen(filename1) - 3, "m3u") == 0) || (strcmp((char *) filename1 + strlen(filename1) - 4, "m3u8") == 0))) {
 		return 1;
 	}
 	else {
@@ -393,8 +398,7 @@ int isM3U(char *filename1) {
 
 void printHelp() {
 	
-	
-		printf("\nm3ucreate version 0.2.3\n");
+		printf("\nm3ucreate version 0.2.3f\n");
 		printf("Creates M3U files from lists of files given as command line arguments. Asterisk wild\n");
 		printf("cards are accepted for tracks.\n");
 		printf("USAGE:\n");
