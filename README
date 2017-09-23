@@ -1,4 +1,4 @@
-m3ucreate version 0.2.1
+m3ucreate version 0.2.3
 Creates M3U files from lists of files given as command line arguments. Asterisk wild
 cards are accepted for tracks.
 USAGE:
