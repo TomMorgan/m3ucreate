@@ -20,7 +20,7 @@ char overrideM3UCheck = 0;				// Is 1 if "-o" is selected (write to last argumen
 int cmdI = 0;                           // Used to iterate through the command line arguments like "-f" or "-m" or "-o"
 char noCMD = 0;
 #if NO_USER_INTERFACE_OPTIMIZED == 0
-const char *version = "0.2.3f";		                           // Used to specify whether a command line option has been entered.
+const char *version = "0.2.3g";		                           // Used to specify whether a command line option has been entered.
 #endif
 
 char isM3U(char *filename1);            // Function prototypes; see functions themselves below main() for comments
@@ -249,7 +249,7 @@ int main (int argc, char *argv[]) {
 			
 		}
 
-		if (doJ == 1 || (isM3U(argv[argc - 1]) == 1)) { // If -j (doJ) has been selected, join existing m3u files, filenames,
+		else if (doJ == 1 || (isM3U(argv[argc - 1]) == 1)) { // If -j (doJ) has been selected, join existing m3u files, filenames,
 														// and wildcards
 			if (argc > cmdI) {                          // Check if there are actually more arguments than the command iterator
 				
@@ -398,7 +398,7 @@ char isM3U(char *filename1) {
 
 void printHelp() {
 	
-		printf("\nm3ucreate version 0.2.3f\n");
+		printf("\nm3ucreate version 0.2.3g\n");
 		printf("Creates M3U files from lists of files given as command line arguments. Asterisk wild\n");
 		printf("cards are accepted for tracks.\n");
 		printf("USAGE:\n");
